@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고객지원</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <%- include("common/header.ejs") %>
+    <div id="container">
+        <%- include("common/banner.ejs") %>
+        <div class="brd_table">
+            <div class="center">
+                <div class="top_line">
+                    <h2>기업소식</h2>
+                    <div class="bot_line">
+                        <p>Total:<%- data.length %></p>
+                        <div class="right">
+                            <select name="sel_search">
+                                <option value="title">제목</option>
+                                <option value="auther">작성자</option>
+                            </select>
+                            <input type="text">
+                            <button class="search_btn">검색</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="line" id="topLine">
+                    <div class="number">번호</div>
+                    <div class="title">제목</div>
+                    <div class="auther">작성자</div>
+                </div>
+                <% for(let i = 0; i < data.length; i++){ %>
+                    <div class="line">
+                        <div class="number"><%- data[i].brdid %></div>
+                        <div class="title"><a href="/detail/<%- data[i].brdid %>"><%- data[i].brdtitle %></a></div>
+                        <div class="auther"><%- data[i].brdauther %></div>
+                    </div>
+                <% } %>
+                <a class="write_btn" href="/insert">글쓰기</a>
+            </div>
+        </div>
+    </div>
+    <%- include("common/footer.ejs") %>
+</body>
+</html>

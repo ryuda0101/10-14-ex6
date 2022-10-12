@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고객지원 게시글 작성</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <%- include("common/header.ejs") %>
+    <div id="container">
+        <%- include("common/banner.ejs") %>
+        <div class="brd_form">
+            <div class="center">
+                <div class="top_context">
+                    <h2>문의하기</h2>
+                    <p>
+                        지엔테크 제품에 대한 <span>궁금한 사항이나 관련 자료</span>가 필요하신분들은 문의 글을 남겨주세요.<br>
+                        담당자 확인 후 전화나 메일로 답변을 드리겠습니다.
+                    </p>
+                </div>
+                <form id="myform" action="/add" method="post">
+                    <div class="auther">
+                        <p>작성자</p>
+                        <input type="text" name="auther" id="auther">
+                    </div>
+                    <div class="title">
+                        <p>제목</p>
+                        <input type="text" name="title" id="title">
+                    </div>
+                    <div class="context">
+                        <p>문의사항</p>
+                        <textarea name="context" id="context"></textarea>
+                    </div>
+                    <div class="btns">
+                        <button type="submit">문의하기</button>
+                        <a class="cancel" href="/list">취소</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <%- include("common/footer.ejs") %>
+</body>
+</html>

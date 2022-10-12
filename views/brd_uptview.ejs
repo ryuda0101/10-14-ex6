@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include("common/header.ejs") %>
+    <div id="container">
+        <%- include("common/banner.ejs") %>
+        <div class="brd_upt">
+            <form id="myform" action="/update" method="post">
+                <input type="hidden" name="id" id="id" value="<%- data.brdid %>">
+                <div class="auther">
+                    <p>작성자</p>
+                    <input disabled="true" type="text" name="auther" id="auther" value="<%- data.brdauther %>">
+                </div>
+                <div class="title">
+                    <p>제목</p>
+                    <input type="text" name="title" id="title" value="<%- data.brdtitle %>">
+                </div>
+                <div class="context">
+                    <p>문의사항</p>
+                    <textarea name="context" id="context"><%- data.brdcontext %></textarea>
+                </div>
+                <div class="btns">
+                    <button type="submit">문의하기</button>
+                    <a class="cancel" href="/list">취소</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <%- include("common/footer.ejs") %>
+</body>
+</html>
