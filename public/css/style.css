@@ -217,9 +217,11 @@ input {
 }
 .brd_table .center .line .date {
   width: 20%;
+  text-align: center;
 }
 .brd_table .center .line .view {
   width: 10%;
+  text-align: center;
 }
 .brd_table .center .write_btn {
   display: block;
