@@ -210,10 +210,16 @@ input {
   text-align: center;
 }
 .brd_table .center .line .title {
-  width: 70%;
+  width: 50%;
 }
 .brd_table .center .line .auther {
+  width: 10%;
+}
+.brd_table .center .line .date {
   width: 20%;
+}
+.brd_table .center .line .view {
+  width: 10%;
 }
 .brd_table .center .write_btn {
   display: block;
@@ -305,6 +311,9 @@ input {
   line-height: 220px;
   border-bottom: 1px solid #d1d1d1;
 }
+.brd_form .center #myform .context textarea {
+  white-space: pre;
+}
 
 .brd_detail {
   display: flex;
@@ -339,10 +348,15 @@ input {
   height: 282px;
   padding: 40px 10px;
   box-sizing: border-box;
+  white-space: pre;
+}
+.brd_detail .center .under_info {
+  display: flex;
+  justify-content: space-between;
 }
 .brd_detail .center .btns {
   position: absolute;
-  bottom: 0;
+  bottom: -60px;
   right: 0;
 }
 .brd_detail .center .btns a {
@@ -416,4 +430,7 @@ input {
   height: 220px;
   line-height: 220px;
   border-bottom: 1px solid #d1d1d1;
+}
+.brd_upt #myform .context textarea {
+  white-space: pre;
 }

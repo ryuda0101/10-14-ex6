@@ -2,6 +2,8 @@
 const express = require("express");
 // 데이터베이스의 데이터 입력, 출력을 위한 함수명령어 불러들이는 작업
 const MongoClient = require("mongodb").MongoClient;
+// 시간 관련된 데이터 받아오기위한 moment라이브러리 사용(함수)
+const moment = require("moment");
 const app = express();
 
 // 포트번호 변수로 세팅
@@ -55,12 +57,17 @@ app.get("/insert",function(req,res){
 });
 
 app.post("/add",function(req,res){
+    let date = moment().format("YYYY-MM-DD HH:mm:ss")
     db.collection("ex6_count").findOne({name:"문의게시판"},function(err,result){
         db.collection("ex6_board").insertOne({
             brdid:result.totalCount + 1,
             brdtitle:req.body.title,
             brdcontext:req.body.context,
-            brdauther:req.body.auther
+            brdauther:req.body.auther,
+            // 현재 시간 작업
+            brddate:date,
+            // 조회수 작업
+            brdviews:0
         },function(err,result){
             db.collection("ex6_count").updateOne({name:"문의게시판"},{$inc:{totalCount:1}},function(err,result){
                 // 목록 페이지로 이동 → 이후 상세페이지로 변경 예정
@@ -80,8 +87,12 @@ app.get("/list",function(req,res){
 app.get("/detail/:no",function(req,res){
     // 주소창을 통해서 보내는 데이터값이나 폼태그에서 입력한 데이터값들은 전부 string
     // 게시글이 있는 컬렉션에 게시글 번호값은 정수데이터라 데이터 유행을 매칭해야한다 
-    db.collection("ex6_board").findOne({brdid:Number(req.params.no)},function(err,result){
-        res.render("brd_detail.ejs",{data:result});
+    // 글 상세페이지 접속시 해당 글 조회수가 1씩 증가되도록 작업 ↓
+    db.collection("ex6_board").updateOne({brdid:Number(req.params.no)},{$inc:{brdviews:1}},function(err,result){
+        // 제목 누르면 해당 게시글의 상세페이지 접속 ↓
+        db.collection("ex6_board").findOne({brdid:Number(req.params.no)},function(err,result){
+            res.render("brd_detail.ejs",{data:result});
+        });
     });
 });
 
