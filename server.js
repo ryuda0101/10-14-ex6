@@ -57,7 +57,7 @@ app.get("/insert",function(req,res){
 });
 
 app.post("/add",function(req,res){
-    let date = moment().format("YYYY-MM-DD HH:mm:ss")
+    let date = moment().format("YYYY-MM-DD HH:mm")
     db.collection("ex6_count").findOne({name:"문의게시판"},function(err,result){
         db.collection("ex6_board").insertOne({
             brdid:result.totalCount + 1,

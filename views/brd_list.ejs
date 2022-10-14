@@ -17,14 +17,16 @@
                     <h2>기업소식</h2>
                     <div class="bot_line">
                         <p>Total:<%- data.length %></p>
-                        <div class="right">
-                            <select name="sel_search">
-                                <option value="title">제목</option>
-                                <option value="auther">작성자</option>
+                        <!-- 검색 기능 -->
+                        <form class="right" action="/search" method="get">
+                            <select name="searchCategory">
+                                <option value="brdtitle">제목</option>
+                                <option value="brdcontext">내용</option>
+                                <option value="brdauther">작성자</option>
                             </select>
-                            <input type="text">
-                            <button class="search_btn">검색</button>
-                        </div>
+                            <input type="text" name="searchResult">
+                            <button class="search_btn" type="submit">검색</button>
+                        </form>
                     </div>
                 </div>
                 <div class="line" id="topLine">
