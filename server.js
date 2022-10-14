@@ -7,7 +7,8 @@ const moment = require("moment");
 const app = express();
 
 // 포트번호 변수로 세팅
-const port = process.env.PORT || 8000;
+// const port = process.env.PORT || 8000;
+const port = 8080;
 
 
 // ejs 태그를 사용하기 위한 세팅
@@ -79,7 +80,7 @@ app.post("/add",function(req,res){
 
 app.get("/list",function(req,res){
     // 데이터베이스에서 게시글 관련 데이터를 꺼내서 가져온 후 brd_list.ejs 전달
-    db.collection("ex6_board").find().toArray(function(err,result){
+    db.collection("ex6_board").find().sort({brdid:1}).toArray(function(err,result){
         res.render("brd_list.ejs",{data:result});
     });
 })
@@ -121,3 +122,32 @@ app.get("/delete/:no",function(req,res){
         res.redirect("/list");
     })
 });
+
+// 검색 기능 작업
+app.get("/search",function(req,res){
+
+    // db에서 가져온 코드 붙여넣기
+    let test = [
+            {
+              $search: {
+                index: 'ex6_search',
+                text: {
+                  query: req.query.searchResult,
+                  path: req.query.searchCategory
+                }
+              }
+            },
+            // 필요한 옵션 추가로 넣을 수 있음
+            // 이때 들어가는 옵션은 객체의 형식으로 들어간다.
+            {
+              $sort:{brdid:-1}
+            }
+          ]
+    
+        // db에 있는 ex8_board 컬렉션에 접근해서 해당 단어에 맞는 게시글 관련 객체들만 꺼내올것
+        db.collection("ex6_board").aggregate(test).toArray(function(err,result){
+            res.render("brd_list",{data:result});
+            console.log(result)
+        });
+    
+    });
