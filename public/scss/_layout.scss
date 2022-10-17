@@ -30,6 +30,22 @@
     }
 }
 
+
+// 메인화면 작업 시작
+.condition{
+    position:absolute;
+    top:35px;
+    right:120px;
+    .loginBtn {
+        &::before {
+            content:""; display:inline-block;
+            width:1px; height:15px; background-color:#000;
+            transform:translateY(3px); margin-right:5px;
+        }
+    }
+}
+
+
 // 배너작업 시작
 #banner {
     background-image:url(../img/bg2.png);
@@ -42,6 +58,7 @@
         p {font-size:15px;}
     }
 }
+
 
 // footer 작업 시작
 #footer {
@@ -93,6 +110,7 @@
         }
     }
 }
+
 
 // brd_list 작업 시작
 .brd_table {
@@ -148,8 +166,13 @@
             line-height:34px; text-align:center;
             position:absolute; right:0; bottom:-55px;
         }
+        .list_btn {width:72px; height:34px;
+            color:#fff; background-color:#333;
+            line-height:34px; text-align:center;
+            position:absolute; right:80px; bottom:-55px; display:none;}
     }
 }
+
 
 // brd_insert 작업 시작
 .brd_form {
@@ -242,8 +265,8 @@
     }
 }
 
-// brd_uptview 작업 시작
 
+// brd_uptview 작업 시작
 .brd_upt {
     display:flex; justify-content:center;
     padding:140px 0;
@@ -282,6 +305,33 @@
             height:220px; line-height:220px;
             border-bottom:1px solid #d1d1d1;
             textarea {white-space:pre;}
+        }
+    }
+}
+
+
+// login 작업시작
+#container {
+    .center.join {
+        width:100%;
+        display:flex; justify-content:center;
+        .loginForm {
+            width:600px;
+            height:450px;
+            margin-top:100px;
+            border:1px solid #adafb6;
+            display:flex; justify-content:center;  flex-direction:column;
+            text-align:center;
+            >div {
+                margin:10px 0;
+                label {font-size:20px; width:20%; display:inline-block;}
+                input {font-size:20px; border: 1px solid #777;}
+            }
+            button {
+                width:100px;
+                height:30px;
+                margin:30px auto;
+            }
         }
     }
 }

@@ -46,10 +46,52 @@
                     </div>
                 <% } %>
                 <a class="write_btn" href="/insert">글쓰기</a>
+                <a class="list_btn" href="/list">목록</a>
             </div>
         </div>
     </div>
     <%- include("common/footer.ejs") %>
     <script src="js/search.js"></script>
+    <script>
+        const listBtn = document.querySelector(".list_btn");
+        
+        // 검색 폼 태그 선택
+        const myform = document.querySelector(".top_line .right");
+
+        // 검색input에 value값 없으면 다음화면으로 넘어가지 않도록 하는 스크립트 작업
+        // 검색어 입력하는 input 태그
+        const searchResult = document.querySelector(".search_input");
+        // 검색 전송 버튼 태그
+        const searchBtn = document.querySelector(".search_btn");
+        
+        // 검색 전송 버튼을 클릭시
+        searchBtn.addEventListener("click",function(event){
+            // trim() / 문자열의 띄어쓰기 공백들을 제거해주는 문자열 처리 함수
+            
+            // let searchValue = "       월요일   입니다.";
+            // console.log(searchValue);
+            // searchValue = searchValue.trim();
+            // console.log(searchValue);
+
+            // 검색어 입력한 데이터값 변수에 담아준다.
+            searchValue = searchResult.value;
+            // 검색에 앞, 뒤로 공백 제거 후 변수에 다시 대입
+            searchValue = searchValue.trim();
+
+            if(searchValue === ""){
+                alert("검색어를 입력해 주세요.")
+                event.preventDefault();
+            }
+            else {
+                // 데이터 전송 하라는 스크립트 함수
+                mtform.submit();
+                // listBtn.style.display = block;
+            }
+        });
+        listBtn.addEventListener("click",function(){
+            // listBtn.style.display = none;
+        });
+
+    </script>
 </body>
 </html>

@@ -4,10 +4,19 @@ const express = require("express");
 const MongoClient = require("mongodb").MongoClient;
 // 시간 관련된 데이터 받아오기위한 moment라이브러리 사용(함수)
 const moment = require("moment");
+// 로그인 관련 데이터 받아오기위한 작업
+// 로그인 검증을 위해 passport 라이브러리 불러들임
+const passport = require('passport');
+// Strategy(전략) → 로그인 검증을 하기 위한 방법을 쓰기 위해 함수를 불러들이는 작업
+const LocalStrategy = require('passport-local').Strategy;
+// 사용자의 로그인 데이터 관리를 위한 세션 생성에 관련된 함수 명령어 사용
+const session = require('express-session');
+
 const app = express();
 
 // 포트번호 변수로 세팅
 const port = process.env.PORT || 8000;
+// const port = 8080;
 
 
 // ejs 태그를 사용하기 위한 세팅
@@ -16,6 +25,16 @@ app.set("view engine","ejs");
 app.use(express.urlencoded({extended: true}));
 // css나 img, js와 같은 정적인 파일 사용하려면 ↓ 하단의 코드를 작성해야한다.
 app.use(express.static('public'));
+
+
+// 로그인 관련 작언을 하기 위한 세팅
+// 로그인 관련 작업시 세션을 생성하고 데이터를 기록할 때 세션 이름의 접두사 / 세션 변경시 자동저장 유무 설정
+app.use(session({secret : '비밀코드', resave : true, saveUninitialized: false}));
+// passport라이브러리 실행
+app.use(passport.initialize());
+// 로그인 검증시 세션데이터를 이용해서 검증하겠다.
+app.use(passport.session());
+
 
 // Mongodb 데이터 베이스 연결작업
 // 데이터베이스 연결을 위한 변수 세팅 (변수의 이름은 자유롭게 지어도 ok)
@@ -34,22 +53,11 @@ MongoClient.connect("mongodb+srv://admin:qwer1234@testdb.g2xxxrk.mongodb.net/?re
     });
 });
 
-// // get → a태그나 주소창에 기입한 url /
-// // post → 폼태그에서 입력시 요청 req 응답 res
-// app.get("/",function(req,res){
-//     // ↑하나의 요청에 ↓응답은 한번만
-//     // res.send("메시지 보낼때")
-//     // res.sendFile(__dirname + "/index.html");
-//     // res.sendFile(__dirname + "/public/index.html");
-//     // res.render("ejs파일명");
-//     // res.redirect("/원하는 경로명");
-// });
 
 // 메인페이지
 app.get("/",function(req,res){
-    res.render("main");
+    res.render("main",{userData:req.user});
 });
-
 
 // 게시글 작성 페이지 경로 요청
 app.get("/insert",function(req,res){
@@ -148,5 +156,87 @@ app.get("/search",function(req,res){
             res.render("brd_list",{data:result});
             console.log(result)
         });
-    
     });
+
+// 로그인 기능 작업
+app.get("/login",function(req,res){
+    res.render("login");
+});
+
+app.get("/join",function(req,res){
+    res.render("join");
+})
+
+// 회원가입시 입력한 정보 데이터베이스에 저장
+// 회원가입 페이지에서 입력한 내용들을 데이터베이스에 저장
+app.post ("/join",function(req,res){
+    db.collection("ex9_count").findOne({name:"회원정보"},function(err,result){
+        db.collection("ex9_join").insertOne({
+            joinno:result.joinCount + 1,
+            joinid:req.body.userid,
+            joinpass:req.body.userpass,
+            joinphone:req.body.userphone,
+            joinemail:req.body.useremail
+        },function(err,result){
+            db.collection("ex9_count").updateOne({name:"회원정보"},{$inc:{joinCount:1}},function(){
+                res.redirect("/login");
+            });
+        });
+    });
+});
+
+// 실제 로그인 검증하는 경로로 요청
+// 입력한 값이 넘어오면 function 전에 검증을 위해 passport 실행해준다
+// failureRedirect는 잘못 입력했을 경우 이동할 경로
+// function(req,res){} ← 여기에 적는 거는 아이디, 비밀번호 올바르게 입력 시 이동할 페이지 경로
+app.post("/login",passport.authenticate('local', {failureRedirect : '/fail'}),function(req,res){
+    // 로그인 성공시 메인페이지로 이동
+    res.redirect("/");
+});
+
+passport.use(new LocalStrategy({
+    usernameField: 'userid',    // login.ejs에서 입력한 아이디의 name값
+    passwordField: 'userpass',    // login.ejs에서 입력한 비밀번호의 name값
+    session: true,      // 세션을 이용할것인지에 대한 여부
+    passReqToCallback: false,   // 아이디와 비밀번호 말고도 다른 항목들을 더 검사할것인가에 대한 여부
+  }, function (userid, userpass, done) {
+    console.log(userid, userpass);
+    db.collection('ex9_join').findOne({ joinid: userid }, function (err, result) {
+      if (err) return done(err)
+  
+      // 아이디가 일치하지 않는다면 아래의 동작 수행
+      if (!result) return done(null, false, { message: '존재하지않는 아이디 입니다.' })
+      // 비밀번호가 일치한다면 아래의 동작 수행
+      if (userpass == result.joinpass) {
+        return done(null, result)
+        // 비밀번호가 일치하지 않다면 아래의 동작 수행
+      } else {
+        return done(null, false, { message: '비밀번호를 다시한번 확인해 주세요' })
+      }
+    })
+}));
+
+// 데이터베이스에 있는 아이디와 비밀번호가 일치하면
+// 세션을 생성하고 해당 아이디와 비밀번호를 기록하여 저장하는 작업
+passport.serializeUser(function (user, done) {
+    done(null, user.joinid)
+});
+
+// 만들어진 세션을 전달해서 다른페이지에서도 해당 세션을 사용할 수 있도록 처리 (페이지 접근 제한)
+passport.deserializeUser(function (joinid, done) {
+    // 데이터베이스에 있는 아이디로 로그인 했을 때 아이디만 불러와서 다른페이지에서도 세션을 사용할 수 있도록 처리
+    db.collection("ex9_join").findOne({joinid:joinid},function(err,result){
+        done(null,result)
+    });
+});
+
+// 로그아웃 기능 작업
+app.get("/logout",function(req,res){
+    // 서버의 세션을 삭제하고, 본인 웹브라우저의 쿠키를 삭제한다.
+    req.session.destroy(function(err,result){
+        // 지워줄 쿠키를 선택한다. / 콘솔 로그의 application → cookies에 가면 name에서 확인할 수 있다.
+        res.clearCookie("connect.sid")
+        // 로그아웃 후 다시 메인페이지로 돌아가기
+        res.redirect("/");
+    });
+});

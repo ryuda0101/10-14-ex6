@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <%- include("common/header.ejs") %>
+    <div id="container">
+        <%- include("common/login_banner.ejs") %>
+        <div class="center join">
+            <form action="/join" method="post" class="loginForm">
+                <div>
+                    <label for="userid">아이디</label>
+                    <input type="text" name="userid" class="userid" placeholder="아이디">
+                </div>
+                <div>
+                    <label for="userpass">비밀번호</label>
+                    <input type="password" name="userpass" class="userpass" placeholder="비밀번호">
+                </div>
+                <div>
+                    <label for="userphone">전화번호</label>
+                    <input type="text" name="userphone" class="userphone" placeholder="전화번호">
+                </div>
+                <div>
+                    <label for="useremail">이메일</label>
+                    <input type="text" name="useremail" class="useremail" placeholder="이메일">
+                </div>
+                <button type="submit">회원가입</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
