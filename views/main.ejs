@@ -14,17 +14,6 @@
     </div>
     <%- include("common/footer.ejs") %>
     <div>
-        <div class="condition">
-            <% if(userData){ %>
-                <!-- 참이라면 @@@@님 이라고 뜨기 -->
-                <div class="loginuser">안녕하세요, <%- userData.joinid %> 님</div>
-                <a href="/logout">로그아웃</a>
-            <% } else { %>
-                <!-- 거짓이라면 로그인, 회원가입 메뉴 출력 -->
-                <a class="joinBtn" href="/login">로그인</a>
-                <a class="loginBtn" href="/join">회원가입</a>
-            <% } %>
-        </div>
     </div>
 </body>
 </html>

@@ -8,5 +8,16 @@
             <li><a href="/list">고객지원</a></li>
             <li><a href="#">채용안내</a></li>
         </ul>
+        <div class="condition">
+            <% if(userData){ %>
+                <!-- 참이라면 @@@@님 이라고 뜨기 -->
+                <div class="loginuser">안녕하세요, <%- userData.joinid %> 님</div>
+                <a class="logoutBtn" href="/logout">로그아웃</a>
+            <% } else { %>
+                <!-- 거짓이라면 로그인, 회원가입 메뉴 출력 -->
+                <a class="loginBtn" href="/login">로그인</a>
+                <a class="joinBtn" href="/join">회원가입</a>
+            <% } %>
+        </div>
     </div>
 </div>

@@ -61,7 +61,7 @@ app.get("/",function(req,res){
 
 // 게시글 작성 페이지 경로 요청
 app.get("/insert",function(req,res){
-    res.render("brd_insert");
+    res.render("brd_insert",{userData:req.user});
 });
 
 app.post("/add",function(req,res){
@@ -88,7 +88,7 @@ app.post("/add",function(req,res){
 app.get("/list",function(req,res){
     // 데이터베이스에서 게시글 관련 데이터를 꺼내서 가져온 후 brd_list.ejs 전달
     db.collection("ex6_board").find().sort({brdid:1}).toArray(function(err,result){
-        res.render("brd_list.ejs",{data:result});
+        res.render("brd_list.ejs",{data:result,userData:req.user});
     });
 })
 
@@ -99,7 +99,7 @@ app.get("/detail/:no",function(req,res){
     db.collection("ex6_board").updateOne({brdid:Number(req.params.no)},{$inc:{brdviews:1}},function(err,result){
         // 제목 누르면 해당 게시글의 상세페이지 접속 ↓
         db.collection("ex6_board").findOne({brdid:Number(req.params.no)},function(err,result){
-            res.render("brd_detail.ejs",{data:result});
+            res.render("brd_detail.ejs",{data:result,userData:req.user});
         });
     });
 });
@@ -107,7 +107,7 @@ app.get("/detail/:no",function(req,res){
 // 수정 경로로 요청시 수정하는 화면 페이지 응답
 app.get("/uptview/:no",function(req,res){
     db.collection("ex6_board").findOne({brdid:Number(req.params.no)},function(err,result){
-        res.render("brd_uptview",{data:result});
+        res.render("brd_uptview",{data:result,userData:req.user});
     });
 });
 
@@ -153,18 +153,18 @@ app.get("/search",function(req,res){
     
         // db에 있는 ex8_board 컬렉션에 접근해서 해당 단어에 맞는 게시글 관련 객체들만 꺼내올것
         db.collection("ex6_board").aggregate(test).toArray(function(err,result){
-            res.render("brd_list",{data:result});
+            res.render("brd_list",{data:result,userData:req.user});
             console.log(result)
         });
     });
 
 // 로그인 기능 작업
 app.get("/login",function(req,res){
-    res.render("login");
+    res.render("login",{userData:req.user});
 });
 
 app.get("/join",function(req,res){
-    res.render("join");
+    res.render("join",{userData:req.user});
 })
 
 // 회원가입시 입력한 정보 데이터베이스에 저장

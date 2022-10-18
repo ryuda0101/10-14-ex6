@@ -76,20 +76,32 @@ input {
 #header .center .gnb li a {
   font-size: 17px;
 }
-
-.condition {
-  position: absolute;
-  top: 35px;
-  right: 120px;
+#header .center .condition {
+  display: flex;
 }
-.condition .loginBtn::before {
+#header .center .condition .loginBtn {
+  display: flex;
+}
+#header .center .condition .loginBtn::after {
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 15px;
+  background-color: #000;
+  transform: translateY(-1px);
+  margin: 0 5px;
+}
+#header .center .condition > .logoutBtn {
+  transform: translateY(-4px);
+}
+#header .center .condition > .logoutBtn::before {
   content: "";
   display: inline-block;
   width: 1px;
   height: 15px;
   background-color: #000;
   transform: translateY(3px);
-  margin-right: 5px;
+  margin: 0 5px;
 }
 
 #banner {

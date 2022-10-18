@@ -27,23 +27,30 @@
                 }
             }
         }
-    }
-}
-
-
-// 메인화면 작업 시작
-.condition{
-    position:absolute;
-    top:35px;
-    right:120px;
-    .loginBtn {
-        &::before {
-            content:""; display:inline-block;
-            width:1px; height:15px; background-color:#000;
-            transform:translateY(3px); margin-right:5px;
+        // 로그인 버튼
+        .condition{
+            display:flex;
+            .loginBtn {
+                display:flex;
+                &::after {
+                    content:""; display:inline-block;
+                    width:1px; height:15px; background-color:#000;
+                    transform:translateY(-1px); margin:0 5px;
+                }
+            }
+            >.logoutBtn {
+                transform:translateY(-4px);
+                &::before {
+                    content:""; display:inline-block;
+                    width:1px; height:15px; background-color:#000;
+                    transform:translateY(3px); margin:0 5px;
+                }
+            }
         }
     }
 }
+
+
 
 
 // 배너작업 시작
